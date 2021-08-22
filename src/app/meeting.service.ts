@@ -8,7 +8,7 @@ import { Student } from './student';
   providedIn: 'root',
 })
 export class MeetingService {
-  baseUrl = '';
+  baseUrl = 'http://localhost:9090/meetingURL';
   // private _obs = new Subject<string>();
   // url$ = this._obs.asObservable();
 
@@ -20,13 +20,14 @@ export class MeetingService {
     }),
   };
 
-  SetMeeting(url: string) {
-    this._http.post<any>(
-      this.baseUrl,
-      JSON.stringify({
-        meetingURL: url,
+  SetMeeting(meetingURL: string, date: Date, teachID: number) {
+    this._http
+      .post<any>(this.baseUrl, {
+        meetingURL,
+        date,
+        teachID,
       })
-    );
+      .subscribe();
   }
   GetMeeting(): Observable<Student> {
     return this._http.get<Student>(this.baseUrl);

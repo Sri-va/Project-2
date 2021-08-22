@@ -1,10 +1,12 @@
 export interface Instructor {
-  id: number;
+  teacherId: number;
   firstName: string;
   lastName: string;
-  userName: string;
   email: string;
-  courseName: string;
-  meetingURL: string;
-  meetingDate: string;
+  course: string;
+  phno: any;
+  pass: string;
+
+  // meetingURL: string;
+  // meetingDate: string;
 }

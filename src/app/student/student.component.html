@@ -34,32 +34,28 @@
       <table
         class="table table-striped table-hover"
         style="background-color: #f0f8ff"
-        *ngFor="let i of student"
+        *ngIf="student"
       >
         <tbody>
           <tr>
             <td class="col-md-6"><strong>ID :</strong></td>
-            <td class="col-md">{{ i.id }}</td>
-          </tr>
-          <tr>
-            <td class="col-md-6"><strong>Username :</strong></td>
-            <td class="col-md">{{ i.userName }}</td>
+            <td class="col-md">{{ student.stuId }}</td>
           </tr>
           <tr>
             <td class="col-md-6"><strong>First Name :</strong></td>
-            <td class="col-md">{{ i.firstName }}</td>
+            <td class="col-md">{{ student.firstName }}</td>
           </tr>
           <tr>
             <td class="col-md-6"><strong>Last Name :</strong></td>
-            <td class="col-md">{{ i.lastName }}</td>
+            <td class="col-md">{{ student.lastName }}</td>
           </tr>
           <tr>
             <td class="col-md-6"><strong>Email :</strong></td>
-            <td class="col-md">{{ i.email }}</td>
+            <td class="col-md">{{ student.email }}</td>
           </tr>
           <tr>
             <td class="col-md-6"><strong>Course :</strong></td>
-            <td class="col-md">{{ i.courseName }}</td>
+            <td class="col-md">{{ student.course }}</td>
           </tr>
         </tbody>
       </table>
@@ -70,10 +66,19 @@
     <ng-container *ngIf="selectedTab === 'ongoing-meeting'">
       <h5 class="card-title">Ongoing meetings</h5>
       <p class="card-text" *ngFor="let s of student">
-        Google meeting url: {{ s.meetingURL }}
+        Google meeting url: {{ s.url }}
       </p>
     </ng-container>
 
-    <ng-container *ngIf="selectedTab === 'upcoming-meeting'"></ng-container>
+    <!-- <ng-container *ngIf="selectedTab === 'upcoming-meeting'"></ng-container>
+    <ng-container *ngIf="selectedTab === 'notes'">
+      <h3>
+        Using Link <br/>
+        <a href="#" (click)="downloadFile()">Download Notes</a>
+      </h3>
+      
+      <h3>Using Button</h3>
+      <input type="button" (click)="download()" value="Download"/>
+    </ng-container> -->
   </div>
 </div>

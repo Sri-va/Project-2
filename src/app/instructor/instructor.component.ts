@@ -1,7 +1,12 @@
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { pipe, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { Instructor } from '../instructor';
 import { LoginService } from '../login.service';
 import { MeetingService } from '../meeting.service';
+import { Student } from '../student';
+import { StudentService } from '../student.service';
 
 @Component({
   selector: 'app-instructor',
@@ -10,31 +15,41 @@ import { MeetingService } from '../meeting.service';
 })
 export class InstructorComponent implements OnInit {
   meetingUrl = '';
+  meetingDate: Date | any;
   btnclick: boolean = false;
   instructor: Instructor | any;
+  students: Student | any;
   constructor(
     private meetingService: MeetingService,
-    private _login: LoginService
+    private _login: LoginService,
+    private _studentservice: StudentService,
+    private _http: HttpClient
   ) {}
 
   tabs = new Map<string, string>([
     ['dashboard', 'Dashboard'],
     ['create-meeting', 'Create Meeting'],
     ['upload-notes', 'Upload notes'],
-    ['groupchat', 'Groupchat'],
+    ['view-students', 'View Students'],
   ]);
   selectedTab = 'dashboard';
   defaultOrderFn = () => 0;
 
   ngOnInit() {
-    this.meetingService.SetMeeting(this.meetingUrl);
+    // this._login.instructordata.subscribe((data: any) => {
+    //   this.instructor = data;
+    // });
     this._login
-      .GetLoginInstructor()
-      .subscribe((observer) => (this.instructor = observer));
+      .GetLoginInstructor('jas@gmail.com', 'jas123')
+      .subscribe((data) => (this.instructor = data));
   }
 
   updateMeeting() {
-    this.meetingService.SetMeeting(this.meetingUrl);
+    this.meetingService.SetMeeting(
+      this.meetingUrl,
+      this.meetingDate,
+      this.instructor.teacherId
+    );
     this.btnclick = true;
     const timeout = setTimeout(() => {
       this.btnclick = false;
@@ -42,24 +57,47 @@ export class InstructorComponent implements OnInit {
     }, 5000);
   }
 
-  //   fileChange(event) {
-  //     let fileList: FileList = event.target.files;
-  //     if(fileList.length > 0) {
-  //         let file: File = fileList[0];
-  //         let formData:FormData = new FormData();
-  //         formData.append('uploadFile', file, file.name);
-  //         let headers = new Headers();
-  //         /** In Angular 5, including the header Content-Type can invalidate your request */
-  //         headers.append('Content-Type', 'multipart/form-data');
-  //         headers.append('Accept', 'application/json');
-  //         let options = new RequestOptions({ headers: headers });
-  //         this.http.post(`${this.apiEndPoint}`, formData, options)
-  //             .map(res => res.json())
-  //             .catch(error => Observable.throw(error))
-  //             .subscribe(
-  //                 data => console.log('success'),
-  //                 error => console.log(error)
-  //             )
-  //     }
-  // }
+  fileName = '';
+  uploadProgress: number | undefined;
+  uploadSub: Subscription | any;
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.item(0);
+
+    if (file) {
+      this.fileName = file.name;
+
+      const formData = new FormData();
+
+      formData.append('files', file);
+
+      const upload$ = this._http
+        .post('http://localhost:9090/uploadFiles', formData, {
+          observe: 'events',
+          reportProgress: true,
+        })
+        .pipe(finalize(() => this.reset()));
+
+      this.uploadSub = upload$.subscribe((event) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+        }
+      });
+
+      upload$.subscribe();
+    }
+  }
+  cancelUpload() {
+    this.uploadSub.unsubscribe();
+    this.reset();
+  }
+
+  reset() {
+    this.uploadProgress = null;
+    this.uploadSub = null;
+  }
+  viewStudentsByCourse() {
+    this.students = this._studentservice
+      .GetStudentsByCourse(this.instructor.course)
+      .subscribe((data) => console.log(data));
+  }
 }

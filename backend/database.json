@@ -1,6 +1,6 @@
 {
     "instructors":[
-        {"id":12,"firstName":"First","lastName":"Last","userName":"user","email":"mail","courseName":"Course","meetingURL":"http://localhost:3000/instructors",
+        {"id":12,"firstName":"First","lastName":"Last","userName":"user","password":"pass","email":"mail","courseName":"Course","meetingURL":"http://localhost:3000/instructors",
             "meetingDate":"20-08-2021"}
        
       ]

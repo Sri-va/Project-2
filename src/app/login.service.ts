@@ -8,15 +8,29 @@ import { Student } from './student';
   providedIn: 'root',
 })
 export class LoginService {
-  studentUrl = '';
-  instructorUrl = 'http://localhost:3000/instructors';
+  studentUrl = 'http://localhost:9090/loginStudent';
+  instructordata: Observable<Instructor> | any;
+  loginInstructorUrl = 'http://localhost:9090/loginTeacher';
+
   constructor(private _http: HttpClient) {}
 
-  GetLoginInstructor(): Observable<Instructor> {
-    return this._http.get<Instructor>(this.instructorUrl);
+  GetLoginInstructor(name: string, password: string): Observable<Instructor> {
+    const body = {
+      email: name,
+      pass: password,
+    };
+    this.instructordata = this._http.post<Instructor>(
+      this.loginInstructorUrl,
+      body
+    );
+    return this.instructordata;
   }
 
-  GetLoginStudents(): Observable<Student> {
-    return this._http.get<Student>(this.studentUrl);
+  GetLoginStudents(name: string, password: string): Observable<Student> {
+    const body = {
+      email: name,
+      pass: password,
+    };
+    return this._http.post<Student>(this.studentUrl, body);
   }
 }

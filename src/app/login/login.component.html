@@ -126,7 +126,7 @@
         <!-- <a href="#" class="btn btn-primary col-4 offset-4">Launch Meeting</a> -->
         <button
           class="btn btn-primary col-4 offset-4"
-          [routerLink]="['instructor']"
+          (click)="validateLoginInstructor()"
         >
           Login
         </button>

@@ -1,9 +1,10 @@
 export interface Student {
-  id: number;
+  stuId: number;
   firstName: string;
   lastName: string;
-  userName: string;
-  courses: string[];
-  meetingURL: string;
-  meetingDate: Date;
+  email: string;
+  phno: any;
+  course: string;
+  url: string;
+  urlDate: Date;
 }

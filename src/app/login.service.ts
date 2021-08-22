@@ -10,6 +10,7 @@ import { Student } from './student';
 export class LoginService {
   studentUrl = 'http://localhost:9090/loginStudent';
   instructordata: Observable<Instructor> | any;
+  studentdata: Observable<Student> | any;
   loginInstructorUrl = 'http://localhost:9090/loginTeacher';
 
   constructor(private _http: HttpClient) {}
@@ -31,6 +32,7 @@ export class LoginService {
       email: name,
       pass: password,
     };
-    return this._http.post<Student>(this.studentUrl, body);
+    this.studentdata = this._http.post<Student>(this.studentUrl, body);
+    return this.studentdata;
   }
 }

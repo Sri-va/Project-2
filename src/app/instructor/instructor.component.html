@@ -1,4 +1,44 @@
-<div class="card text-center">
+<nav class="navbar navbar-dark fixed-top">
+  <div class="container">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#Navbar"
+      aria-controls="Navbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="Navbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active col-md-3" aria-current="page" href="#"
+            ><span class="fa fa-home fa-lg"></span> Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link col-md-3" [routerLink]="['../../about']"
+            ><span class="fa fa-info fa-lg"></span> About</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link col-md-3" [routerLink]="['../../contact']"
+            ><span class="fa fa-address-card fa-lg"></span> Contact</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['../../login']"
+            ><span class="fa fa-sign-out fa-lg"></span> Signout</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="mt-5 card text-center">
   <div class="card-header">
     <ul class="nav nav-pills card-header-pills">
       <li class="nav-item" *ngFor="let item of tabs | keyvalue: defaultOrderFn">
@@ -9,19 +49,18 @@
             item.key + '-tab',
             item.key === selectedTab ? 'active' : ''
           ]"
-          (click)="selectedTab = item.key"
+          (click)="changeTab(item.key)"
           >{{ item.value }}</a
         >
       </li>
     </ul>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="instructor">
     <ng-container *ngIf="selectedTab === 'dashboard'">
-      <h5 class="card-title">Special title treatment</h5>
+      <h5 class="card-title">Welcome {{ instructor.firstName | uppercase }}</h5>
       <table
         class="table table-striped table-hover"
         style="background-color: #f0f8ff"
-        *ngIf="instructor"
       >
         <tbody>
           <tr>
@@ -61,7 +100,9 @@
     <ng-container *ngIf="selectedTab === 'create-meeting'">
       <h5 class="card-title">Create meeting</h5>
       <p class="card-text">
-        <button class="btn btn-success" onclick="">Join meeting</button>
+        <button class="btn btn-success" (click)="joinMeeting()">
+          Join meeting
+        </button>
       </p>
 
       <div class="input-group mb-3">
@@ -93,7 +134,7 @@
         />
       </div>
       <button class="btn btn-success" (click)="updateMeeting()">OK</button>
-      <div class="toast-body" *ngIf="btnclick">
+      <div class="toast-body" *ngIf="showToast">
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
           <symbol
             id="check-circle-fill"
@@ -140,22 +181,30 @@
         (change)="onFileSelected($event)"
         #fileUpload
       />
-
-      <!-- <div class="file-upload">
-        {{ fileName || "No file uploaded yet." }}
-
-        <button
-          mat-mini-fab
-          color="primary"
-          class="upload-btn"
-          (click)="fileUpload.click()"
-        >
-          Click here
-        </div>
-        </button> -->
     </ng-container>
     <ng-container *ngIf="selectedTab === 'view-students'">
-      <button (click)="viewStudentsByCourse()">Check</button></ng-container
+      <table class="table table-striped table-hover" *ngIf="students">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Course</th>
+            <th>Email</th>
+            <th>Phone number</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let s of students">
+          <tr>
+            <td>{{ s.stuId }}</td>
+            <td>{{ s.firstName }}</td>
+            <td>{{ s.lastName }}</td>
+            <td>{{ s.course }}</td>
+            <td>{{ s.email }}</td>
+            <td>{{ s.phno }}</td>
+          </tr>
+        </tbody>
+      </table></ng-container
     >
     <!-- <ng-container *ngIf="selectedTab === 'view-students'">
       <h5 class="card-title">Special title treatment</h5>

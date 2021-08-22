@@ -1,4 +1,44 @@
-<div class="card text-center">
+<nav class="navbar navbar-dark fixed-top">
+  <div class="container">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#Navbar"
+      aria-controls="Navbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="Navbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active col-md-3" aria-current="page" href="#"
+            ><span class="fa fa-home fa-lg"></span> Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link col-md-3" [routerLink]="['../../about']"
+            ><span class="fa fa-info fa-lg"></span> About</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link col-md-3" [routerLink]="['../../contact']"
+            ><span class="fa fa-address-card fa-lg"></span> Contact</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['../../login']"
+            ><span class="fa fa-sign-out fa-lg"></span> Signout</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="mt-5 card text-center">
   <div class="card-header">
     <ul class="nav nav-pills card-header-pills">
       <li class="nav-item" *ngFor="let item of tabs | keyvalue: defaultOrderFn">
@@ -28,13 +68,12 @@
       </li>
     </ul>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="student">
     <ng-container *ngIf="selectedTab === 'dashboard'">
-      <h5 class="card-title">Special title treatment</h5>
+      <h5 class="card-title">Welcome {{ student.firstName | uppercase }}</h5>
       <table
         class="table table-striped table-hover"
         style="background-color: #f0f8ff"
-        *ngIf="student"
       >
         <tbody>
           <tr>
@@ -65,20 +104,22 @@
 
     <ng-container *ngIf="selectedTab === 'ongoing-meeting'">
       <h5 class="card-title">Ongoing meetings</h5>
-      <p class="card-text" *ngFor="let s of student">
-        Google meeting url: {{ s.url }}
+      <p class="card-text">
+        Google meeting url:
+        <a href="{{ student.url }}"
+          ><button class="btn-primary">Join meeting</button></a
+        >
       </p>
     </ng-container>
 
-    <!-- <ng-container *ngIf="selectedTab === 'upcoming-meeting'"></ng-container>
+    <ng-container *ngIf="selectedTab === 'upcoming-meeting'"></ng-container>
     <ng-container *ngIf="selectedTab === 'notes'">
       <h3>
-        Using Link <br/>
-        <a href="#" (click)="downloadFile()">Download Notes</a>
+        Using Link <br />
+        <button class="btn-primary" (click)="downloadFile()">
+          Download Notes
+        </button>
       </h3>
-      
-      <h3>Using Button</h3>
-      <input type="button" (click)="download()" value="Download"/>
-    </ng-container> -->
+    </ng-container>
   </div>
 </div>

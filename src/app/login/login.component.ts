@@ -29,10 +29,8 @@ export class LoginComponent implements OnInit {
   }
 
   validateLoginStudent() {
-    this._login
-      .GetLoginInstructor(this.studentName, this.pass)
-      .subscribe(() => {
-        this.router.navigate(['login', 'student']);
-      });
+    this._login.GetLoginStudents(this.studentName, this.pass).subscribe(() => {
+      this.router.navigate(['login', 'student']);
+    });
   }
 }

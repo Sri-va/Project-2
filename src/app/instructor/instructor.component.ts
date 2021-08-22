@@ -17,6 +17,7 @@ export class InstructorComponent implements OnInit {
   meetingUrl = '';
   meetingDate: Date | any;
   btnclick: boolean = false;
+  uploadStatus: boolean = false;
   instructor: Instructor | any;
   students: Student | any;
   constructor(
@@ -36,12 +37,12 @@ export class InstructorComponent implements OnInit {
   defaultOrderFn = () => 0;
 
   ngOnInit() {
-    // this._login.instructordata.subscribe((data: any) => {
-    //   this.instructor = data;
-    // });
     this._login
       .GetLoginInstructor('jas@gmail.com', 'jas123')
       .subscribe((data) => (this.instructor = data));
+    this._login.instructordata.subscribe((data: any) => {
+      this.instructor = data;
+    });
   }
 
   updateMeeting() {
@@ -83,9 +84,11 @@ export class InstructorComponent implements OnInit {
         }
       });
 
-      upload$.subscribe();
+      upload$.subscribe(() => (this.uploadStatus = true));
     }
   }
+
+  showToast = this.btnclick || this.uploadStatus;
   cancelUpload() {
     this.uploadSub.unsubscribe();
     this.reset();
@@ -98,6 +101,16 @@ export class InstructorComponent implements OnInit {
   viewStudentsByCourse() {
     this.students = this._studentservice
       .GetStudentsByCourse(this.instructor.course)
-      .subscribe((data) => console.log(data));
+      .subscribe((data) => (this.students = data));
+  }
+
+  changeTab(key: string) {
+    this.selectedTab = key;
+    if (this.selectedTab === 'view-students') {
+      this.viewStudentsByCourse();
+    }
+  }
+  joinMeeting() {
+    window.open('https://meet.google.com/');
   }
 }

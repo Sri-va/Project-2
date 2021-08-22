@@ -29,11 +29,4 @@ export class MeetingService {
       })
       .subscribe();
   }
-  GetMeeting(): Observable<Student> {
-    return this._http.get<Student>(this.baseUrl);
-  }
-
-  // ngOnDestroy() {
-  //   this._obs.complete();
-  // }
 }

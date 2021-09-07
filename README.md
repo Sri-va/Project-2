@@ -57,7 +57,7 @@ All students and Faculty can login into Dashboard but the functionality differs.
 
 ## Getting Started
    
-> Download the project from this repository [Link](https://github.com/Sri-va/Project2-backend.git) as well as from the current repository using git clone command in your convenient folder 
+> Download the project from this repository [backend](https://github.com/Sri-va/Project2-backend.git) as well as from the current repository using git clone command in your convenient folder 
 > Open the Spring Boot project using any of the IDE's like Spring Tool Suite, Eclipse, etc.
 > Run the project as SpringBoot App
 > Open the Angular application using VS Code and go to the terminal and execute this command **ng serve -o**
@@ -65,7 +65,7 @@ All students and Faculty can login into Dashboard but the functionality differs.
 
 
 - Images of what it should look like
-   [Link]()
+   [index](https://github.com/Sri-va/Project-2/blob/main/index.jpeg)
 
 
 ## Usage
